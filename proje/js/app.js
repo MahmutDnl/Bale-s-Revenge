@@ -97,9 +97,9 @@ function toplariYonet() {
 
 function canBariniCiz() {
     const genislik = 300;
-    const yukseklik = 25;
+    const yukseklik = 20;
     const x = (canvas.width / 2) - (genislik / 2);
-    const y = canvas.height - 50; 
+    const y = canvas.height - 40; 
 
     // Arka Plan
     ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
@@ -127,7 +127,7 @@ function guncelle() {
 
     // 1. PASİF CAN DÜŞÜŞÜ (Saniyede 10 can)
     if (karakter.can > 0) {
-        karakter.can -= 0.1; 
+        karakter.can -= 0.08; 
     } else {
         karakter.can = 0;
         alert("Enerjin tükendi! Skorunu geliştirmeyi dene.");
@@ -227,7 +227,7 @@ function guncelle() {
 }
 
 guncelle();
-setInterval(golfculeriEkle, 3500); // Yeni golfçü ekleme hızı
+setInterval(golfculeriEkle, 2000); // Yeni golfçü ekleme hızı
 setInterval(() => {
     golfculer.forEach(g => topFirlat(g));
 }, 2000); // Golfçülerin ateş etme hızı
