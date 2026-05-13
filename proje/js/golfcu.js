@@ -45,6 +45,30 @@ function golfculeriEkle(){
         lastFrameTime: Date.now(),
         frameDelay: 80,
     };
+
+function topFirlat(golfcu){
+    let hedefX = karakter.X + karakter.W / 2;
+    let hedefY = karakter.Y + karakter.H / 2;
+
+    let farkX = hedefX - golfcu.X;
+    let farkY = hedefY - golfcu.Y;
+    let gelisAcisi = Math.atan2(farkY,farkX) 
+
+    let topHizi = 3;
+
+    toplar.push({
+        x : golfcu.x,
+        y : golfcu.y,
+        topHiziX : Math.cos(gelisAcisi) * topHizi,
+        topHiziY : Math.sin(gelisAcisi) * topHizi
+    });
+}
+
+setInterval(() => {
+    golfculer.forEach(g => topFirlat(g));
+},
+2000);
+
     golfculer.push(yeniGolfcu);
     
 }

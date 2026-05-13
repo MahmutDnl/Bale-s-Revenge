@@ -11,72 +11,144 @@ for (let i = 1; i <= 7; i++) {
     yemeResimleri.push(img);
 }
 
-
 const canvas = document.getElementById("OyunCanvas");
 const ctx = canvas.getContext('2d');
-
-
 canvas.width = 1200;
 canvas.height = 680;
 
+const toplar = []; // Golfçülerin fırlattığı toplar
 
 const karakter = {
     X : 600,
     Y : 500,
     W : 20,
     H : 20,
-
+    can: 100,
+    sonHasarZamani: 0,    // Hasar koruması (I-Frame) için
     hiz : 4,
     color : "blue",
-    buyuklukCarpani : 3 ,
+    buyuklukCarpani : 3,
     dur: false,
     yemeModu : false,
     yemeBaslangic : 0
 };
-
 
 const tuslar = {
     ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false,
     w: false, a:false, s:false, d: false, " ":false
 };
 
-
+// --- GİRDİ DİNLEYİCİLERİ ---
 window.addEventListener("keydown", (e) => {
-
-    if(tuslar.hasOwnProperty(e.key)){
-        tuslar[e.key] = true;
-    }
+    if(tuslar.hasOwnProperty(e.key)){ tuslar[e.key] = true; }
 });
-
 window.addEventListener("keyup", (e) => {
-    if(tuslar.hasOwnProperty(e.key)){
-        tuslar[e.key] = false;
-    }
+    if(tuslar.hasOwnProperty(e.key)){ tuslar[e.key] = false; }
 });
 
+function topFirlat(golfcu) {
+    let dx = (karakter.X + karakter.W / 2) - golfcu.x;
+    let dy = (karakter.Y + karakter.H / 2) - golfcu.y;
+    let aci = Math.atan2(dy, dx);
+    toplar.push({
+        x: golfcu.x,
+        y: golfcu.y,
+        vx: Math.cos(aci) * 3,
+        vy: Math.sin(aci) * 3
+    });
+}
 
+function toplariYonet() {
+    for (let i = toplar.length - 1; i >= 0; i--) {
+        let t = toplar[i];
+        t.x += t.vx;
+        t.y += t.vy;
 
-function guncelle(){
-    
+        // Topu çiz
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+
+        // Çarpışma Kontrolü
+        let dx = t.x - (karakter.X + karakter.W / 2);
+        let dy = t.y - (karakter.Y + karakter.H / 2);
+        let mesafe = Math.sqrt(dx * dx + dy * dy);
+        let kYaricap = (karakter.W / 2) * karakter.buyuklukCarpani;
+
+        if (mesafe < kYaricap + 5) {
+            let simdi = Date.now();
+            // 500ms Hasar koruması (I-Frame)
+            if (simdi - karakter.sonHasarZamani > 500) {
+                karakter.can -= 10;
+                karakter.sonHasarZamani = simdi;
+            }
+            toplar.splice(i, 1);
+        }
+
+        // Ekran dışı temizliği
+        if (t.x < 0 || t.x > canvas.width || t.y < 0 || t.y > canvas.height) {
+            toplar.splice(i, 1);
+        }
+    }
+}
+
+function canBariniCiz() {
+    const genislik = 300;
+    const yukseklik = 25;
+    const x = (canvas.width / 2) - (genislik / 2);
+    const y = canvas.height - 50; 
+
+    // Arka Plan
+    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+    ctx.fillRect(x, y, genislik, yukseklik);
+
+    // Can Çubuğu
+    ctx.fillStyle = karakter.can > 50 ? "#2ecc71" : "#e74c3c";
+    let doluluk = (Math.max(0, karakter.can) / 100) * genislik;
+    ctx.fillRect(x, y, doluluk, yukseklik);
+
+    // Çerçeve
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x, y, genislik, yukseklik);
+
+    // Sayısal Değer
+    ctx.fillStyle = "white";
+    ctx.font = "bold 14px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`CAN: %${Math.floor(karakter.can)}`, canvas.width / 2, y + 18);
+}
+
+function guncelle() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 1. PASİF CAN DÜŞÜŞÜ (Saniyede 10 can)
+    if (karakter.can > 0) {
+        karakter.can -= 0.1; 
+    } else {
+        karakter.can = 0;
+        alert("Enerjin tükendi! Skorunu geliştirmeyi dene.");
+        location.reload();
+        return;
+    }
+
     ctx.beginPath();
     ctx.lineWidth = 3;
-    ctx.lineJoin = "miter"
     ctx.strokeStyle = "black";
     ctx.moveTo(150,20);
-
     ctx.lineTo(1050,20);
     ctx.lineTo(1150,630);
     ctx.lineTo(50,630);
-
     ctx.lineTo(150,20);
     ctx.fillStyle="green";
-    
-    ctx.fill()
+    ctx.fill();
     ctx.stroke();
 
-    let oran = (karakter.Y - 20) / (630 - 20); // BU kısm bize yamukta sağ ve sol kenarların sınırlarını verir. 
-    let solSinir = 150 - (oran * 100);  // Yukarıdayken 150, aşağıdayken 50 olur
+    let oran = (karakter.Y - 20) / (630 - 20);
+    let solSinir = 150 - (oran * 100);
     let sagSinir = 1050 + (oran * 100);
 
     if (tuslar[" "] && !karakter.dur) {
@@ -85,96 +157,52 @@ function guncelle(){
         karakter.yemeBaslangic = Date.now();
         karakter.buyuklukCarpani = 6; 
 
-        // Karakterin o anki merkez noktası
         let kMerkezX = karakter.X + (karakter.W / 2);
         let kMerkezY = karakter.Y + (karakter.H / 2);
         let kYaricap = (karakter.W / 2) * karakter.buyuklukCarpani;
-        let kMenzil = (karakter.W / 2)*6;
-
-        
         
         for (let i = golfculer.length - 1; i >= 0; i--) {
             let g = golfculer[i];
-            
-            
             let dx = kMerkezX - g.x;
             let dy = kMerkezY - g.y;
             let mesafe = Math.sqrt(dx * dx + dy * dy);
 
-            
             if (mesafe < kYaricap) {
-                golfculer.splice(i, 1); // Temas edeni listeden siliyoruz
+                golfculer.splice(i, 1); 
+                // Can Ödülü (+10)
+                karakter.can = Math.min(100, karakter.can + 10);
             }
         }
 
-        
         setTimeout(() => {
             karakter.dur = false;
             karakter.yemeModu = false;
             karakter.buyuklukCarpani = 3;
         }, 500);
     }
+
     if(!karakter.dur){
-        if ((tuslar.ArrowUp || tuslar.w) && karakter.Y > 20) {
-        
-            karakter.Y -= karakter.hiz;
-
-            
-            let yeniOran = (karakter.Y - 20) / (630 - 20);
-            let yeniSolSinir = 150 - (yeniOran * 100);
-            let yeniSagSinir = 1050 + (yeniOran * 100);
-
-            
-            if (karakter.X < yeniSolSinir) {
-                karakter.X = yeniSolSinir;
-            }
-
-            
-            if (karakter.X + karakter.W > yeniSagSinir) {
-                karakter.X = yeniSagSinir - karakter.W;
-            }
-        }
-        if ((tuslar.ArrowDown || tuslar.s) && karakter.Y + karakter.H < 630){
-            karakter.Y += karakter.hiz;
-        }
-        
-        if((tuslar.ArrowLeft || tuslar.a) && karakter.X > solSinir){
-            karakter.X -= karakter.hiz;
-        }
-        if((tuslar.ArrowRight || tuslar.d) && karakter.X + karakter.W < sagSinir){
-            karakter.X += karakter.hiz;
-        }
+        if ((tuslar.ArrowUp || tuslar.w) && karakter.Y > 20) karakter.Y -= karakter.hiz;
+        if ((tuslar.ArrowDown || tuslar.s) && karakter.Y + karakter.H < 630) karakter.Y += karakter.hiz;
+        if ((tuslar.ArrowLeft || tuslar.a) && karakter.X > solSinir) karakter.X -= karakter.hiz;
+        if ((tuslar.ArrowRight || tuslar.d) && karakter.X + karakter.W < sagSinir) karakter.X += karakter.hiz;
     }
-    
 
     let guncelYaricap = (karakter.W / 2) * karakter.buyuklukCarpani;
-
     if (karakter.yemeModu) {
-        // Yeme animasyonu resimlerini sırayla göster
         let gecenSure = Date.now() - karakter.yemeBaslangic;
-        let frameIndex = Math.floor(gecenSure / 70); 
-        if (frameIndex > 6) frameIndex = 6; 
-
+        let frameIndex = Math.min(6, Math.floor(gecenSure / 70)); 
         let aktifYemeResmi = yemeResimleri[frameIndex];
         if (aktifYemeResmi && aktifYemeResmi.complete) {
-            
-            // Pixel art'ın net görünmesi için yumuşatmayı kapatıyoruz
             ctx.imageSmoothingEnabled = false; 
-
-            // --- GÖRSEL BÜYÜTME AYARI ---
-            // guncelYaricap şu an buyuklukCarpani=12 olduğu için zaten büyük.
-            // Eğer hala küçük geliyorsa çarpanı (2.5) daha da artırabilirsin (örn: 4.0)
             let animasyonGorselBoyu = guncelYaricap * 5.5; 
-
             ctx.drawImage(aktifYemeResmi, 
                 (karakter.X + karakter.W / 2) - animasyonGorselBoyu / 2, 
                 (karakter.Y + karakter.H / 2) - animasyonGorselBoyu / 2, 
-                animasyonGorselBoyu, 
-                animasyonGorselBoyu
+                animasyonGorselBoyu, animasyonGorselBoyu
             );
         }
     } else {
-        // Normal Mavi Yuvarlak
         ctx.fillStyle = "blue";
         ctx.beginPath();
         ctx.arc(karakter.X + (karakter.W / 2), karakter.Y + (karakter.H / 2), guncelYaricap, 0, 2 * Math.PI);
@@ -182,14 +210,8 @@ function guncelle(){
     }
 
     golfculer.forEach(golfcu => {
-        let simdi = Date.now();
-        if (simdi - golfcu.lastFrameTime > golfcu.frameDelay) {
-            
-            golfcu.currentFrame = (golfcu.currentFrame + 1) % 1; 
-            golfcu.lastFrameTime = simdi;
-        }
-        let aktifResim = golfcuResimleri[golfcu.currentFrame];
-        if (aktifResim && aktifResim.complete && aktifResim.naturalWidth !== 0) {
+        let aktifResim = golfcuResimleri[0]; // Şimdilik ilk frame
+        if (aktifResim && aktifResim.complete) {
             const boy = 200;
             ctx.drawImage(aktifResim, golfcu.x - boy/2, golfcu.y - boy/2, boy, boy);
         } else {
@@ -197,10 +219,15 @@ function guncelle(){
             ctx.fillRect(golfcu.x - 5, golfcu.y - 5, 10, 10);
         }
     });
-    requestAnimationFrame(guncelle);
 
+    toplariYonet(); 
+    canBariniCiz(); 
     
+    requestAnimationFrame(guncelle);
 }
 
 guncelle();
-setInterval(golfculeriEkle, 3500);
+setInterval(golfculeriEkle, 3500); // Yeni golfçü ekleme hızı
+setInterval(() => {
+    golfculer.forEach(g => topFirlat(g));
+}, 2000); // Golfçülerin ateş etme hızı
