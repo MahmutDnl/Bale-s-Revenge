@@ -8,6 +8,7 @@ Bu proje, G.O.L.P oyunundan ilham alınmış, yüksek skor odaklı bir HTML5 Can
 *   **Temel Amaç:** Karakterin can değeri tükenmeden golfçüleri ve topları yutarak en yüksek skora ulaşmak.
 *   **Hasar Sistemi:** Düşman golfçülerden gelen toplara çarpmak can değerini azaltır.
 *   **Kombo Sistemi:** Ardışık yutma eylemleri (5 ve 10 kombo eşikleri) kazanılan puanı katlayarak artırır.
+*   **Ölüm Zamanı** Can Değeri 0'a düşerse oyun biter!!.
 
 ---
 
