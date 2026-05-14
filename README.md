@@ -1,6 +1,7 @@
+
 # Bale-s-Revenge
 High-score-based HTML5 game:
-
+<img width="1920" height="1080" alt="2026-05-14 (2)" src="https://github.com/user-attachments/assets/ee9a833d-7d33-40a9-85fd-a1576103e939" />
 
 Proje İçin Seçilen Oyunun İsmi : G.O.L.P
 
@@ -22,3 +23,7 @@ Oyun Kuralları:
 -Ana karakterin canı tükendiğinde oyun sonlanır ve o ana kadar ulaşılmış skor puanı panelde görüntülenir.
 
 Canlı Oyun Linki : https://mahmutdnl.github.io/Bale-s-Revenge/
+
+
+
+<img width="1920" height="1080" alt="2026-05-14 (6)" src="https://github.com/user-attachments/assets/5b8e6605-f61c-481e-86ec-8fe8a97deee1" />
