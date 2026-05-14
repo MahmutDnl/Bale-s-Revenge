@@ -50,6 +50,47 @@ function golfculeriEkle(){
         vy: 0,
         targetX : 0,
         targetY : 0,
+        level: 1,
+        yuruyusHizi: 1.5,
+        topHizi: 2,
+        
+        top : {
+            active: false,
+            x : konum.x,
+            y : konum.y,
+
+            baslangicX: 0, 
+            baslangicY: 0,
+            vx: 0,
+            vy: 0,
+            targetX : 0,
+            targetY : 0,
+            frame:0,
+            lastFrameTime: 0
+        }
+    };
+    golfculer.push(yeniGolfcu);
+}
+
+function level2GolfculeriEkle(){
+    const konum = rastgeleGolfcuKoordinatiUret();
+
+    const yeniGolfcu = {
+        x: konum.x,
+        y: konum.y,
+        currentFrame: 0,
+        lastFrameTime: Date.now(),
+        frameDelay: 250,
+        animasyonDevam: true,     
+        AtisYapildi: false,
+        sekmeY: 0,
+        vx: 0,
+        vy: 0,
+        targetX : 0,
+        targetY : 0,
+        level: 2,
+        yuruyusHizi: 2.2,
+        topHizi: 3.2,
         
         top : {
             active: false,
@@ -76,7 +117,7 @@ function topuAlmayaGit(golfcu) {
     let mesafe = Math.sqrt(dx * dx + dy * dy);
 
     if (mesafe > 5) {
-        let yürümeHizi = 4;
+        let yürümeHizi = golfcu.yuruyusHizi || 1.5;
         
         // Yatay ve Dikey ilerleme
         golfcu.x += (dx / mesafe) * yürümeHizi;
@@ -100,4 +141,3 @@ function topuAlmayaGit(golfcu) {
         golfcu.sekmeY = 0; // Zıplamayı sıfırla
     }
 }
-

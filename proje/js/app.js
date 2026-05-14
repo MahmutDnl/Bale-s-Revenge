@@ -5,12 +5,15 @@ const buton = document.getElementById("devamButonu");
 
 buton.addEventListener("click", () => {
     oyunBasladi = true;
-    pencere.style.display = "none"; // Pencereyi kapat
+    pencere.style.display = "none"; 
     
     // Tarayıcı izinleri için müzik burada başlamalı
     if (sesler.arkaPlan.paused) {
         istenilenSes("arkaPlan");
     }
+
+    setInterval(golfculeriEkle, 1800);
+    setTimeout(() => { setInterval(level2GolfculeriEkle, 3000); }, 20000);
 });
 
 
@@ -58,6 +61,13 @@ for (let i = 1; i <= 6; i++) {
     img.src = `../assets/golfcu/${i}.png`;
     golfcuResimleri.push(img);
 }
+
+const level2GolfcuResimleri = [];
+for (let i=1; i<=5 ; i++){
+    let img = new Image();
+    img.src = `../assets/golfcu/level2/${i}.png`;
+    level2GolfcuResimleri.push(img);
+}
 const yemeResimleri = [];
 for (let i = 1; i <= 7; i++) {
     let img = new Image();
@@ -84,7 +94,7 @@ const karakter = {
     W: 20,
     H: 20,
 
-    hiz: 5,
+    hiz: 3,
     color: "blue",
     buyuklukCarpani: 25,
     dur: false,
@@ -99,9 +109,7 @@ const karakter = {
     maxKombo: 0
 };
 
-// ─── SABİT HİTBOX YARIÇAPI ───────────────────────────────────────────────────
-// Görselin büyüklüğünden (buyuklukCarpani) tamamen bağımsız.
-// Karakterin merkez noktasından bu kadar piksel uzaklık = "vuruldu".
+
 const HITBOX_YARICAP = 28;
 
 const tuslar = {
@@ -109,11 +117,11 @@ const tuslar = {
     w: false, a: false, s: false, d: false, " ": false
 };
 
-// ─── TEK BİR KEYDOWN DİNLEYİCİ ───────────────────────────────────────────────
-// Önceden iki ayrı "keydown" listener vardı; birleştirdik.
+// Klavye hareketlerini dinliyoruz
+
 window.addEventListener("keydown", (e) => {
     
-    if (sesler.arkaPlan.paused) {
+    if (!karakter.oyunBitti && oyunBasladi && sesler.arkaPlan.paused) {
         istenilenSes("arkaPlan");
     }
 
@@ -198,8 +206,8 @@ function golfcuAtisYap(golfcu) {
     golfcu.top.x = golfcu.x;
     golfcu.top.y = golfcu.y;
 
-    // ─── HEDEF: Karakterin MERKEZ noktası ────────────────────────────────────
-    // Köşe koordinatı yerine merkezi kullanmak topun tam ortaya gitmesini sağlar.
+    // Topun hesapları
+    
     golfcu.top.targetX = karakter.X + karakter.W / 2;
     golfcu.top.targetY = karakter.Y + karakter.H / 2;
 
@@ -210,32 +218,37 @@ function golfcuAtisYap(golfcu) {
     let dy = golfcu.top.targetY - golfcu.y;
     let mesafe = Math.sqrt(dx * dx + dy * dy);
 
-    let topHizi = 5;
+    let topHizi = golfcu.topHizi || 2;
     golfcu.top.vx = (dx / mesafe) * topHizi;
     golfcu.top.vy = (dy / mesafe) * topHizi;
 }
 
 function guncelle() {
 
-    if (!oyunBasladi) { //Oyun başlamadıysa. 
+    if (!oyunBasladi) {  
         requestAnimationFrame(guncelle); 
         return; 
     }
     if (karakter.oyunBitti) {
+        
+        
         oyunBittiLevhasiCiz();
+        sesler.arkaPlan.pause();
         return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (karakter.can > 0) {
-        karakter.can -= 0.06;
+        karakter.can -= 0.05;
     } else {
         karakter.can = 0;
         karakter.oyunBitti = true;
+        sesler.arkaPlan.pause();
+        sesler.arkaPlan.currentTime = 0;
     }
 
-    // ─── YEŞİL ALAN ──────────────────────────────────────────────────────────
+    
     ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.lineJoin = "miter";
@@ -253,20 +266,20 @@ function guncelle() {
     let solSinir = 150 - (oran * 100);
     let sagSinir = 1050 + (oran * 100);
 
-    // ─── SPACE (YEME MODU) ────────────────────────────────────────────────────
+    
     if (tuslar[" "] && !karakter.dur) {
         karakter.dur = true;
         karakter.yemeModu = true;
         karakter.yemeBaslangic = Date.now();
         karakter.buyuklukCarpani = 3;
 
-        // Yeme modunda çarpışma: karakter merkezinden sabit HITBOX_YARICAP * 4
-        // (space animasyonu daha büyük görünür; yeme alanı biraz daha geniş tutuldu)
+        
+        
         let kMerkezX = karakter.X + karakter.W / 2;
         let kMerkezY = karakter.Y + karakter.H / 2;
-        let yemeAlani = HITBOX_YARICAP * 2; // 112px — yeme animasyonuyla orantılı
+        let yemeAlani = HITBOX_YARICAP * 2; 
 
-        for (let i = golfculer.length - 1; i >= 0; i--) {
+        for (let i = golfculer.length - 1; i >= 0; i--){
             let g = golfculer[i];
             let dx = kMerkezX - g.x;
             let dy = kMerkezY - g.y;
@@ -300,7 +313,7 @@ function guncelle() {
         }, 150);
     }
 
-    // ─── KARAKTER HAREKETİ ────────────────────────────────────────────────────
+    // Hole kontrolü
     if (!karakter.dur) {
         if ((tuslar.w || tuslar.ArrowUp) && (tuslar.d || tuslar.ArrowRight)) {
             karakter.bakilanYon = "sagUsteGidenHole";
@@ -341,16 +354,16 @@ function guncelle() {
         }
     }
 
-    // ─── KARAKTER GÖRSELİ ────────────────────────────────────────────────────
+    // HOLE (BALE)
     let guncelBoy = karakter.W * karakter.buyuklukCarpani;
 
     if (karakter.yemeModu) {
         let gecenSure = Date.now() - karakter.yemeBaslangic;
-        let frameIndex = Math.min(Math.floor(gecenSure / 70), 6);
+        let frameIndex = Math.min(Math.floor(gecenSure / 22), 6);
         let aktifYemeResmi = yemeResimleri[frameIndex];
         if (aktifYemeResmi && aktifYemeResmi.complete) {
             ctx.imageSmoothingEnabled = false;
-            let animasyonBoy = guncelBoy * 5.5;
+            let animasyonBoy = guncelBoy * 5.5; // hole yerken büyüme animasyonlarının olduğu yer
             ctx.drawImage(
                 aktifYemeResmi,
                 (karakter.X + karakter.W / 2) - animasyonBoy / 2,
@@ -371,14 +384,14 @@ function guncelle() {
         }
     }
 
-    // ─── GOLFÇÜ DÖNGÜSÜ ──────────────────────────────────────────────────────
+    // golfçülerin animasyonları
     golfculer.forEach(golfcu => {
         let simdi = Date.now();
 
-        // A. ANİMASYON KARELEME
+        //golfçü animasyonları
         if (golfcu.animasyonDevam) {
             if (simdi - golfcu.lastFrameTime > golfcu.frameDelay) {
-                if (golfcu.currentFrame < 5) {
+                if (golfcu.currentFrame < (golfcu.level === 2 ? 4 : 5)) {
                     golfcu.currentFrame++;
                     golfcu.lastFrameTime = simdi;
                 } else {
@@ -390,18 +403,23 @@ function guncelle() {
             }
         }
 
-        // B. TOP HAREKETİ — SADECE BİR KEZ ───────────────────────────────────
-        // ÖNCEKİ HATA: top.x += vx satırı iki ayrı if bloğunda çalışıyordu.
-        // Bu yüzden top her frame'de iki kez ilerliyordu (2x hız).
-        // Düzeltme: Hareket tek blokta; çarpışma kontrolü ardından ayrı yapılır.
         if (golfcu.top.active) {
             
-            // Eğer top henüz yere düşmediyse hareket etsin
+            
             if (!golfcu.top.yerde) {
                 golfcu.top.x += golfcu.top.vx;
                 golfcu.top.y += golfcu.top.vy;
 
-                // 400 birim mesafe kontrolü
+                // top dışarı çıkmasın kontrolü 
+                if (golfcu.top.y < 20) golfcu.top.y = 20;
+                if (golfcu.top.y > 630) golfcu.top.y = 630;
+                let topOran = (golfcu.top.y - 20) / (630 - 20);
+                let topSolSinir = 150 - (topOran * 100);
+                let topSagSinir = 1050 + (topOran * 100);
+                if (golfcu.top.x < topSolSinir) golfcu.top.x = topSolSinir;
+                if (golfcu.top.x > topSagSinir) golfcu.top.x = topSagSinir;
+
+                // topun 400m gitme kontrolü
                 let farkX = golfcu.top.x - golfcu.top.baslangicX;
                 let farkY = golfcu.top.y - golfcu.top.baslangicY;
                 if (Math.sqrt(farkX * farkX + farkY * farkY) >= 400) {
@@ -411,15 +429,14 @@ function guncelle() {
                     golfcu.mod = "topuAl"; 
                 }
 
-                // Top uçarken dönme animasyonu
+                //Topun animasyonları
                 if (simdi - golfcu.top.lastFrameTime > 70) {
                     golfcu.top.frame = (golfcu.top.frame + 1) % 5;
                     golfcu.top.lastFrameTime = simdi;
                 }
             }
 
-            // ─── GENEL ÇARPIŞMA KONTROLÜ (Hem Havada Hem Yerde) ──────────────────────
-            // Bu kısım artık !golfcu.top.yerde bloğunun dışında, yani top aktifse hep çalışır.
+            //Bu kısım hasarları kontrol eder
             let kMerkezX = karakter.X + karakter.W / 2;
             let kMerkezY = karakter.Y + karakter.H / 2;
             let dx = kMerkezX - golfcu.top.x;
@@ -427,19 +444,19 @@ function guncelle() {
             let mesafe = Math.sqrt(dx * dx + dy * dy);
 
             if (mesafe < HITBOX_YARICAP) {
-                // Hasar almadan önce küçük bir zaman kontrolü (üst üste binmesin diye)
+                
                 if (simdi - karakter.sonHasarZamani > 500) { 
                     istenilenSes("hasar");
                     
-                    // Havadaysa 20, yerdeyse 10 can gitsin
-                    karakter.can -= golfcu.top.yerde ? 10 : 20; 
+                    
+                    karakter.can -= golfcu.top.yerde ? 10 : 20; // Eğer golfçü bizi vurursa -20 duran toptan gol yersek -10 sjbdkdbs
                     karakter.kombo = 0;
                     karakter.sonHasarZamani = simdi;
 
-                    // Çarpınca topu yok et (Yoksa karakter üstünde durdukça canı biter)
+                    
                     golfcu.top.active = false; 
                     
-                    // Eğer top havada çarpışmışsa golfçüyü atış modundan çıkar, topu almaya gönder
+                    
                     if (!golfcu.top.yerde) {
                         golfcu.mod = "topuAl";
                     }
@@ -447,13 +464,13 @@ function guncelle() {
             }
         }
 
-        // C. GOLFÇÜ TOPU ALMAYA GİDER
+        
         if (golfcu.mod === "topuAl") {
             topuAlmayaGit(golfcu);
         }
 
-        // D. GOLFÇÜ GÖRSELİ
-        let gResim = golfcuResimleri[golfcu.currentFrame];
+        // Golfçülerin resmi burada
+        let gResim = (golfcu.level === 2 ? level2GolfcuResimleri : golfcuResimleri)[golfcu.currentFrame];
         if (gResim && gResim.complete && gResim.naturalWidth > 0) {
             let cizimY = golfcu.y + (golfcu.sekmeY || 0);
             ctx.drawImage(gResim, golfcu.x - 50, cizimY - 50, 100, 100);
@@ -462,7 +479,7 @@ function guncelle() {
             ctx.fillRect(golfcu.x - 10, (golfcu.y + (golfcu.sekmeY || 0)) - 10, 20, 20);
         }
 
-        // E. TOP GÖRSELİ
+        // Top resmini ekliyoruz
         if (golfcu.top.active) {
             let tResim = topResimleri[golfcu.top.frame];
             if (tResim && tResim.complete && tResim.naturalWidth > 0) {
@@ -477,4 +494,3 @@ function guncelle() {
 }
 
 guncelle();
-setInterval(golfculeriEkle, 2000);
