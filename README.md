@@ -1,30 +1,56 @@
+# 🕹️ Bale's Revenge
 
-# Bale-s-Revenge
-High-score-based HTML5 game:
+Bu proje, **G.O.L.P** oyunundan esinlenerek geliştirilmiş, "Rollerin Tersine Çevrilmesi" (Role Reversal) temasını işleyen yüksek skor odaklı bir HTML5 Canvas oyunudur.
 
-<img width="1920" height="1080" alt="2026-05-14 (2)" src="https://github.com/user-attachments/assets/ee9a833d-7d33-40a9-85fd-a1576103e939" />
+🚀 **[OYUNU CANLI OYNAMAK İÇİN TIKLAYIN](https://mahmutdnl.github.io/Bale-s-Revenge/)**
 
-Proje İçin Seçilen Oyunun İsmi : G.O.L.P
+---
 
-Oyunun Bağlantısı : https://badpiggy.itch.io/golp
+## 📖 Proje Hakkında
+Bu çalışma, **Web Tabanlı Programlama** dersi kapsamında geliştirilmiştir. Oyunun temel mekaniği, geleneksel golfün aksine bir "golf deliği"ni kontrol ederek sahaya top atan golfçüleri ve topları yutmaya çalışmak üzerine kuruludur.
 
+*   **Hedeflenen Oyun:** [G.O.L.P by Bad Piggy](https://badpiggy.itch.io/golp)
+*   **Teknolojiler:** HTML5 Canvas, CSS3, Pure JavaScript (Hiçbir kütüphane kullanılmamıştır).
 
-*## Oyun Kuralları:*
+---
 
--Oyunun temel amacı, ana karakterin can barı tükenmeden en yüksek skora ulaşmaktır.
+## 🎮 Oyun Mekanikleri ve Zorluklar (Challenge)
+*   **Temel Amaç:** Karakterin (Deliğin) can değeri tükenmeden golfçüleri ve topları yutarak en yüksek skora ulaşmak.
+*   **Hasar Sistemi:** Düşman golfçülerden gelen toplara çarpmak can değerini azaltır.
+*   **Kombo Sistemi:** Ardışık yutma eylemleri (5 ve 10 kombo eşikleri) kazanılan puanı katlayarak artırır.
+*   **Dinamik Zorluk:** Süre ilerledikçe düşman sayısı ve top fırlatma hızı artarak oyunun zorluk seviyesini yukarı çeker.
 
--Ana karakterin can değeri, düşmanlardan gelen toplardan hasar alması dahilinde 10 puan azalır.
+---
 
--Ana karakterin can değeri, düşman golfçüleri ve patlamak üzere olan golf toplarını yemesi dahilinde 10 puan artar.
+## ⌨️ Kontroller
+| Aksiyon | Tuş Takımı |
+| :--- | :--- |
+| **Hareket** | `W, A, S, D` veya `Yön Tuşları` |
+| **Yutma (Chomp)** | `Space (Boşluk)` |
 
--Ana karakterin yutma eyleminin skorlamasında; golf oyuncularının yutulması dahilinde 100 puan, patlamak üzere olan golf toplarının yutulması halinde 350 puan kazanır. 
+---
 
--Oyun bir kombo mekaniği üzerine kuruludur. Eğer hasar almadan 5’ten fazla yutma eylemi gerçekleştirilirse golf oyuncularının yutulması 150 puan, patlamak üzere olan golf toplarının yutulması ise 400 puan kazandırır. Bu kombo sayısı 10’dan fazla olursa golf oyuncularının yutulması 200 puan, patlamak üzere olan golf toplarının yutulması ise 500 puan kazandırır.
+## 🖼️ Oyun İçi Görüntüler
+![Oyun Başlangıç Ekranı](assets/hole/1.png) 
+*Görsel 1: Ana menü ve başlangıç sahası.*
 
--Ana karakterin canı tükendiğinde oyun sonlanır ve o ana kadar ulaşılmış skor puanı panelde görüntülenir.
+![Aksiyon ve Kombo Anı](assets/hole/usteGidenHole.png)
+*Görsel 2: Karakterin yutma mekaniği ve düşman etkileşimi.*
 
-Canlı Oyun Linki : https://mahmutdnl.github.io/Bale-s-Revenge/
+---
 
+## 👥 Grup Üyeleri
+*   **Mahmut Donalı** - (Öğrenci Numaranı Buraya Yaz)
+*   **Alperen Ünal** - (Öğrenci Numaranı Buraya Yaz)
+*   **Ayça Sarıca** - (Öğrenci Numaranı Buraya Yaz)
 
+---
 
-<img width="1920" height="1080" alt="2026-05-14 (6)" src="https://github.com/user-attachments/assets/5b8e6605-f61c-481e-86ec-8fe8a97deee1" />
+## 🛠️ Kullanılan Varlıklar (Assets)
+Oyun içerisinde kullanılan ses ve görsel varlıkların kaynakları aşağıda belirtilmiştir:
+*   **Görseller:** [assets/ Klasörü İçerisindeki Dosyalar]
+*   **Sesler:** [background.mp3, eat.mp3, hit.mp3]
+*   *(Eğer assetleri bir siteden aldıysan buraya linklerini eklemelisin)*
+
+---
+*Bu proje ödev kuralları gereği GitHub Pages üzerinde barındırılmaktadır.*
