@@ -1,0 +1,101 @@
+body{
+    background-color: red;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+canvas{
+    margin-top: 45px ;
+    background-color: red;
+
+}
+#baslangicPenceresi {
+    position: fixed; /* Ekrana sabitler */
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Arkayı karartır */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Her şeyin en üstünde durur */
+}
+
+.icerik {
+    width: 600px;  /* İstediğin genişlik */
+    height: 400px; /* 800 boy çok uzun kaçabilir, 400-500 idealdir ama istersen 800 yapabilirsin */
+    background: #1a1a1a;
+    border: 5px solid #2ecc71;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 50px rgba(241, 196, 15, 0.3);
+}
+
+#devamButonu {
+    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    background: #f1c40f;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#devamButonu:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+}
+.sagAlt{
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    justify-content: flex-end;
+    position: fixed;
+    bottom:20px;
+    right: 30px;
+    margin-bottom: 0;
+
+    font-family: monospace;
+    font-size: 30px;
+    font: bold;
+    color: white;
+    z-index: 9999;
+}
+.sagAlt span {
+    opacity: 0; 
+    transform: translateX(20px);
+    animation: undertaleGiris 0.5s steps(10) forwards;
+}
+/* Her ismin farklı zamanda gelmesi için gecikme */
+.sagAlt span:nth-child(1) { color: #fdfdfd; animation-delay: 0.5s; } /* "Created by" sarı olsun */
+.sagAlt span:nth-child(2) { animation-delay: 1.2s; }
+.sagAlt span:nth-child(3) { animation-delay: 1.9s; }
+.sagAlt span:nth-child(4) { animation-delay: 2.6s; }
+
+@keyframes undertaleGiris {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Azim dolu titreme efekti */
+.sagAlt span:hover {
+    animation: titret 0.2s infinite;
+    color: #f1c40f;
+    cursor: default;
+}
+
+@keyframes titret {
+    0% { transform: translate(1px, 1px); }
+    50% { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, -1px); }
+}
