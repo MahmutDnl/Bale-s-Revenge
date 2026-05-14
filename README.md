@@ -1,6 +1,11 @@
 # Bale-s-Revenge
 High-score-based HTML5 game:
 
+
+Proje İçin Seçilen Oyunun İsmi : G.O.L.P
+Oyunun Bağlantısı : https://badpiggy.itch.io/golp
+
+
 Oyun Kuralları:
 
 -Oyunun temel amacı, ana karakterin can barı tükenmeden en yüksek skora ulaşmaktır.
