@@ -31,10 +31,10 @@ Bu çalışma, **Web Tabanlı Programlama** dersi kapsamında geliştirilmiştir
 ---
 
 ## 🖼️ Oyun İçi Görüntüler
-![Oyun Başlangıç Ekranı](assets/hole/1.png) 
+![Oyun İçi Bir Görüntü](<img width="1920" height="1080" alt="2026-05-14 (2)" src="https://github.com/user-attachments/assets/d35efdcd-6776-4736-a3f0-ed81cda319a1" />) 
 *Görsel 1: Ana menü ve başlangıç sahası.*
 
-![Aksiyon ve Kombo Anı](assets/hole/usteGidenHole.png)
+![Ana Karakterin Aksiyon ve Kombo Anı](assets/hole/usteGidenHole.png)
 *Görsel 2: Karakterin yutma mekaniği ve düşman etkileşimi.*
 
 ---
