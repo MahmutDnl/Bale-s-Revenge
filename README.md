@@ -15,3 +15,4 @@ Oyun Kuralları:
 
 -Ana karakterin canı tükendiğinde oyun sonlanır ve o ana kadar ulaşılmış skor puanı panelde görüntülenir.
 
+Canlı Oyun Linki : https://mahmutdnl.github.io/Bale-s-Revenge/
