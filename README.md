@@ -35,6 +35,11 @@ Bu proje, G.O.L.P oyunundan ilham alınmış, yüksek skor odaklı bir HTML5 Can
 
 ---
 
+![Oyun Bitiş Ekranı](oyun_gorseli.png) 
+*Görsel 1: Ana menü ve başlangıç sahası.*
+
+---
+
 ##  Kullanılan Varlıklar (Assets)
 Oyun içerisinde kullanılan ses ve görsel varlıkların kaynakları aşağıda belirtilmiştir:
 *   **Görseller:** [assets Klasörü İçerisindeki Dosyalar]
