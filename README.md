@@ -24,7 +24,7 @@ Bu proje, G.O.L.P oyunundan ilham alınmış, yüksek skor odaklı bir HTML5 Can
 *Görsel 1: Ana menü ve başlangıç sahası.*
 
 ![Ana Karakterin Aksiyon ve Kombo Anı](assets/hole/usteGidenHole.png)
-*Görsel 2: Karakterin yutma mekaniği ve düşman etkileşimi.*
+*Görsel 2: Karakterin ilerleme ve yönelme mekaniği.*
 
 ---
 
