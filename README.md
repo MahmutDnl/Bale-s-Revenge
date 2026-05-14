@@ -20,7 +20,7 @@ Bu proje, G.O.L.P oyunundan ilham alınmış, yüksek skor odaklı bir HTML5 Can
 ---
 
 ##  Oyun İçi Görüntüler
-![Oyun İçi Bir Görüntü](2026-05-14 (2).png) 
+![Oyun İçi Bir Görüntü](oyun_gorseli.png) 
 *Görsel 1: Ana menü ve başlangıç sahası.*
 
 ![Ana Karakterin Aksiyon ve Kombo Anı](assets/hole/usteGidenHole.png)
