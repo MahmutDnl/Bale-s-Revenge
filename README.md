@@ -1,6 +1,7 @@
 
 # Bale-s-Revenge
 High-score-based HTML5 game:
+
 <img width="1920" height="1080" alt="2026-05-14 (2)" src="https://github.com/user-attachments/assets/ee9a833d-7d33-40a9-85fd-a1576103e939" />
 
 Proje İçin Seçilen Oyunun İsmi : G.O.L.P
