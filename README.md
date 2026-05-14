@@ -36,7 +36,7 @@ Bu proje, G.O.L.P oyunundan ilham alınmış, yüksek skor odaklı bir HTML5 Can
 
 ---
 
-![Oyun Bitiş Ekranı](oyun_bitis.png) 
+![Oyun Bitiş Ekranı](oyun_ici_gorseli.png) 
 *Görsel 1: Ana menü ve başlangıç sahası.*
 
 ---
