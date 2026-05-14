@@ -15,10 +15,10 @@ buton.addEventListener("click", () => {
 
 
 const sesler = {
-    arkaPlan : new Audio("../assets/sounds/background.mp3"),
-    yeme: new Audio("../assets/sounds/eat.mp3"),
-    vurus: new Audio("../assets/sounds/hit.mp3"),
-    hasar: new Audio("../assets/sounds/in.mp3")
+    arkaPlan : new Audio("/assets/sounds/background.mp3"),
+    yeme: new Audio("/assets/sounds/eat.mp3"),
+    vurus: new Audio("/assets/sounds/hit.mp3"),
+    hasar: new Audio("/assets/sounds/in.mp3")
 }
 
 sesler.arkaPlan.loop=true;
@@ -42,15 +42,15 @@ const holeResimleri = {
     dur: new Image()
 };
 
-holeResimleri.usteGidenHole.src = "../assets/hole/usteGidenHole.png";
-holeResimleri.altaGidenHole.src = "../assets/hole/altaGidenHole.png";
-holeResimleri.solaGidenHole.src = "../assets/hole/solaGidenHole.png";
-holeResimleri.sagaGidenHole.src = "../assets/hole/sagaGidenHole.png";
-holeResimleri.solUsteGidenHole.src = "../assets/hole/solUsteGidenHole.png";
-holeResimleri.sagUsteGidenHole.src = "../assets/hole/sagUsteGidenHole.png";
-holeResimleri.solAltaGidenHole.src = "../assets/hole/solAltaGidenHole.png";
-holeResimleri.sagAltaGidenHole.src = "../assets/hole/sagAltaGidenHole.png";
-holeResimleri.dur.src = "../assets/hole/1.png";
+holeResimleri.usteGidenHole.src = "/assets/hole/usteGidenHole.png";
+holeResimleri.altaGidenHole.src = "/assets/hole/altaGidenHole.png";
+holeResimleri.solaGidenHole.src = "/assets/hole/solaGidenHole.png";
+holeResimleri.sagaGidenHole.src = "/assets/hole/sagaGidenHole.png";
+holeResimleri.solUsteGidenHole.src = "/assets/hole/solUsteGidenHole.png";
+holeResimleri.sagUsteGidenHole.src = "/assets/hole/sagUsteGidenHole.png";
+holeResimleri.solAltaGidenHole.src = "/assets/hole/solAltaGidenHole.png";
+holeResimleri.sagAltaGidenHole.src = "/assets/hole/sagAltaGidenHole.png";
+holeResimleri.dur.src = "/assets/hole/1.png";
 
 const golfcuResimleri = [];
 for (let i = 1; i <= 6; i++) {
